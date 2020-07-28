@@ -16,9 +16,9 @@ const getName = () => {
 
     //----FETCH------------------------------------------------------------
 
-    //let name = localStorage.getItem('login_name');
+    let name = localStorage.getItem('login_name');
 
-    let name = 'shavel';
+    //let name = 'shavel';
 
     fetch('http://servicedesk:8080/SearchN.do?fromModule=QuickReq&title=null&selectName=%D0%90%D0%B2%D1%82%D0%BE%D1%80+%D0%B7%D0%B0%D1%8F%D0%B2%D0%BA%D0%B8FromQuickReq&excludeUserID=null&searchText=' + name.substring(0, 3) + '&submitbutton=%D0%9F%D0%BE%D0%B8%D1%81%D0%BA&msp=null')
         .then(function (response) {
@@ -61,13 +61,15 @@ const getName = () => {
                 //   (array[i].filter(x => x === "smirnov"? store =i:null)) 
                 // }
 
-                array.map(a => a.filter((x, i) => x === "shavelap" ? store = a : null))
+                array.map(a => a.filter((x, i) => x === name ? store = a : null))
                 return store;
                 //return  
             };
 
             const regxname = array => {
                 let login, fullname, email;
+
+                console.log("--->", array);
 
                 for (let i = 0; i < array.length; i++) {
                     console.log("--->", array[i]);
@@ -148,7 +150,19 @@ const getName = () => {
 
                 }
 
-                return new_array
+                let new_new_arr = [];
+
+                new_array.forEach((element, index, array) => {
+
+                    if (element.login === array[(index + 1 !== array.length) ? index + 1 : 0].login) {
+                    } else {
+                        return new_new_arr.push(element)
+                    }
+                }
+
+                )
+
+                return new_new_arr.filter(e => e.login !== 'DIO')
 
             };
 
@@ -171,7 +185,6 @@ const getName = () => {
       "
     onMouseOver=" this.style.color ='red', this.style.fontSize = '12px' "
     onMouseOut=" this.style.color ='white', this.style.fontSize = '11px' " 
-
       onClick="(function clickHandler(x) {
       console.log('${x}')
       alert(x)
@@ -208,13 +221,11 @@ const getName = () => {
         display: table;
         ' 
         class='form_container'>
-
         <div style ='
         display: flex;
         flex-direction: column;
         align-items: center;
         '>
-
             <div style='
             width: 70%;
             '>
@@ -223,7 +234,6 @@ const getName = () => {
                                 Автоматический поиск
                             </h1>
                     </strong>
-
     ${ divTemplate(Object.values(regxname(findmax(arr))).map(x => x.replace(',', '') + '<br/>').join(''))}
             
              <div>
@@ -251,14 +261,6 @@ const getName = () => {
 
 $(".menulist-ui3").append("<li> <a  style ='cursor:pointer' class ='get_name_user'>Получить имя</a> </li>");
 $(".get_name_user").click(() => getName());
-
-
-
-
-
-
-
-
 
 
 
