@@ -18,7 +18,7 @@ const getName = () => {
 
     let name = localStorage.getItem('login_name');
 
-    //let name = 'shavel';
+    //let name = 'saprykin';
 
     fetch('http://servicedesk:8080/SearchN.do?fromModule=QuickReq&title=null&selectName=%D0%90%D0%B2%D1%82%D0%BE%D1%80+%D0%B7%D0%B0%D1%8F%D0%B2%D0%BA%D0%B8FromQuickReq&excludeUserID=null&searchText=' + name.substring(0, 3) + '&submitbutton=%D0%9F%D0%BE%D0%B8%D1%81%D0%BA&msp=null')
         .then(function (response) {
@@ -43,7 +43,7 @@ const getName = () => {
                 }
             }
 
-            console.log(arr);
+            console.log('ARR -> ', arr);
 
             //-----FETCH---LIST---FOR----MANUAL----SEARCHING--------------------------------
 
@@ -56,12 +56,17 @@ const getName = () => {
 
             const findmax = array => {
                 let store;
+                console.log('STORE ARR -> ', array)
 
                 // for (let i = 0; i < array.length; i++) {
                 //   (array[i].filter(x => x === "smirnov"? store =i:null)) 
                 // }
 
                 array.map(a => a.filter((x, i) => x === name ? store = a : null))
+
+                console.log('name ', name);
+
+
                 return store;
                 //return  
             };
@@ -69,17 +74,20 @@ const getName = () => {
             const regxname = array => {
                 let login, fullname, email;
 
-                console.log("--->", array);
+                console.log("REGXNAME", array);
 
                 for (let i = 0; i < array.length; i++) {
-                    console.log("--->", array[i]);
+                    //  console.log("REGXNAME", array[i]);
 
                     if (array[i].match(/(Начальник|Служб(а|ы))|(Служба|технической)/gi)) {
                         array[i] = "";
                     }
 
-                    if (array[i].match(/(^(?![A-Z])[a-z]+$)/gm)) {
-                        login = array[i].match(/(^(?![A-Z])[a-z]+$)/gm);
+                    if (array[i].match(/(^(?![A-Z])[a-z]+\_+[a-z]+$)|(^(?![A-Z])[a-z]+$)/gm)) {
+                        login = array[i].match(/(^(?![A-Z])[a-z]+\_+[a-z]+$)|(^(?![A-Z])[a-z]+$)/gm);
+                        //  console.log('LOGIN ', login)
+                        // if (array[i].match(/(^(?![A-Z])[a-z]+$)/gm)) {
+                        //     login = array[i].match(/(^(?![A-Z])[a-z]+$)/gm);
                         console.log('LOGIN ', login)
                     }
                     // if (array[i].match(/^[a-z]+./)) {
@@ -90,10 +98,14 @@ const getName = () => {
                         fullname = array[i].match(/[А-Я][а-яё]*\s[А-Я][а-яё]*\s[А-Я][а-яё]*/);
                         console.log('FULLNAME ', fullname)
                     }
-                    if (array[i].match(/(([a-z]+\.|[a-zA-Z])[a-zA-Z]+@[a-z]+\.[a-z]+[a-z])/g)) {
-                        email = array[i].match(
-                            /(([a-z]+\.|[a-zA-Z])[a-zA-Z]+@[a-z]+\.[a-z]+[a-z])/g
-                        );
+                    if (array[i].match(/([A-Z]+[a-z]+@[a-z]+\.[a-z]+)|(([a-z]|[A-Z])+\_[a-z]+@[a-z]+\.[a-z]+)|([a-z]\.[a-z]+@[a-z]+\.[a-z]+)|([a-z]+@[a-z]+\.[a-z]+)|([A-Z][a-z]+[A-Z]+@[a-z]+\.[a-z]+)/g)) {
+                        email = array[i].match(/([A-Z]+[a-z]+@[a-z]+\.[a-z]+)|(([a-z]|[A-Z])+\_[a-z]+@[a-z]+\.[a-z]+)|([a-z]\.[a-z]+@[a-z]+\.[a-z]+)|([a-z]+@[a-z]+\.[a-z]+)|([A-Z][a-z]+[A-Z]+@[a-z]+\.[a-z]+)/g);
+
+                        // if (array[i].match(/(([a-z]+\.|[a-zA-Z])[a-zA-Z]+@[a-z]+\.[a-z]+[a-z])/g)) {
+                        //     email = array[i].match(
+                        //         /(([a-z]+\.|[a-zA-Z])[a-zA-Z]+@[a-z]+\.[a-z]+[a-z])/g
+                        //     );
+
                         console.log('EMAIL ', email)
                     }
                     // if (array[i].match(/([a-z.]|[A-z])+@[a-z]+\.[a-z]+/g)) {
@@ -102,9 +114,9 @@ const getName = () => {
                 }
 
                 return {
-                    login: login.toString(),
-                    fullname: fullname.toString(),
-                    email: email.toString()
+                    'login': login.toString(),
+                    'fullname': fullname.toString(),
+                    'email': email.toString()
                 };
             };
 
@@ -114,6 +126,8 @@ const getName = () => {
                 let login, fullname, email;
                 let new_array = [];
 
+                //    console.log(array);
+
                 for (let i = 0; i < array.length; i++) {
 
                     array[i].forEach((arrays, i, a) => {
@@ -122,19 +136,24 @@ const getName = () => {
                             arrays = "";
                         }
 
-                        if (arrays.match(/(^(?![A-Z])[a-z]+$)/gm)) {
-                            login = arrays.match(/(^(?![A-Z])[a-z]+$)/gm);
-                            console.log(login.toString())
+                        if (arrays.match(/(^(?![A-Z])[a-z]+\_+[a-z]+$)|(^(?![A-Z])[a-z]+$)/gm)) {
+                            login = arrays.match(/(^(?![A-Z])[a-z]+\_+[a-z]+$)|(^(?![A-Z])[a-z]+$)/gm);
+
+
+
+                            // if (arrays.match(/(^(?![A-Z])[a-z]+$)/gm)) {
+                            //     login = arrays.match(/(^(?![A-Z])[a-z]+$)/gm);
+                            // console.log(login.toString())
 
                         }
                         if (arrays.match(/[А-Я][а-яё]*\s[А-Я][а-яё]*\s[А-Я][а-яё]*/)) {
                             fullname = arrays.match(/[А-Я][а-яё]*\s[А-Я][а-яё]*\s[А-Я][а-яё]*/);
-                            console.log(fullname.toString())
+                            // console.log(fullname.toString())
 
                         }
-                        if (arrays.match(/(([a-z]+\.|[a-zA-Z])[a-zA-Z]+@[a-z]+\.[a-z]+[a-z])/g)) {
+                        if (arrays.match(/([A-Z]+[a-z]+@[a-z]+\.[a-z]+)|(([a-z]|[A-Z])+\_[a-z]+@[a-z]+\.[a-z]+)|([a-z]\.[a-z]+@[a-z]+\.[a-z]+)|([a-z]+@[a-z]+\.[a-z]+)|([A-Z][a-z]+[A-Z]+@[a-z]+\.[a-z]+)/g)) {
                             email = arrays.match(
-                                /(([a-z]+\.|[a-zA-Z])[a-zA-Z]+@[a-z]+\.[a-z]+[a-z])/g
+                                /([A-Z]+[a-z]+@[a-z]+\.[a-z]+)|(([a-z]|[A-Z])+\_[a-z]+@[a-z]+\.[a-z]+)|([a-z]\.[a-z]+@[a-z]+\.[a-z]+)|([a-z]+@[a-z]+\.[a-z]+)|([A-Z][a-z]+[A-Z]+@[a-z]+\.[a-z]+)/g
                             );
                             // console.log(email.toString())
 
@@ -154,13 +173,30 @@ const getName = () => {
 
                 new_array.forEach((element, index, array) => {
 
-                    if (element.login === array[(index + 1 !== array.length) ? index + 1 : 0].login) {
+                    if (index === array.length - 1) {
+
+                        (element.login === array[index].login && element.email === array[index].email)
+                            ? new_new_arr.push(element)
+                            : null
+
                     } else {
-                        return new_new_arr.push(element)
+
+                        if (array.length === 1) {
+
+                            return new_new_arr.push(element)
+                        } else {
+
+                            if (element.login === array[(index + 1 !== array.length) ? index + 1 : 0].login) {
+                            } else {
+                                return new_new_arr.push(element)
+                            }
+                        }
                     }
                 }
 
                 )
+                console.log('NEW ARRAY AUTO SEACRH', new_array);
+                console.log('NEW_NEW_ARRAY AUTO SEACRH', new_new_arr);
 
                 return new_new_arr.filter(e => e.login !== 'DIO')
 
