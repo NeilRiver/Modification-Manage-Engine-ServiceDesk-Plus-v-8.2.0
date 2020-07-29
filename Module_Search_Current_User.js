@@ -18,9 +18,9 @@ const getName = () => {
 
     let name = localStorage.getItem('login_name');
 
-    //let name = 'saprykin';
+    // let name = 'saprykin';
 
-    fetch('http://servicedesk:8080/SearchN.do?fromModule=QuickReq&title=null&selectName=%D0%90%D0%B2%D1%82%D0%BE%D1%80+%D0%B7%D0%B0%D1%8F%D0%B2%D0%BA%D0%B8FromQuickReq&excludeUserID=null&searchText=' + name.substring(0, 3) + '&submitbutton=%D0%9F%D0%BE%D0%B8%D1%81%D0%BA&msp=null')
+    fetch('http://servicedesk:8080/SearchN.do?fromModule=QuickReq&searchText=' + name.substring(0, 3))
         .then(function (response) {
 
             return response.text()
@@ -221,10 +221,16 @@ const getName = () => {
       "
     onMouseOver=" this.style.color ='red', this.style.fontSize = '12px' "
     onMouseOut=" this.style.color ='white', this.style.fontSize = '11px' " 
-      onClick="(function clickHandler(x) {
-      console.log('${x}')
-      alert(x)
-      })('${x}');">
+      
+      onClick="
+         (function clickHandler(x) {
+             
+              localStorage.setItem('full_name', x.match(/[А-Я][а-яё]*\\s[А-Я][а-яё]*\\s[А-Я][а-яё]*/));
+                 $('.form_creater').remove();
+                                    }
+          )
+      ('${x}');">
+      
        <strong>
             <h3>
                 ${x}
@@ -251,7 +257,7 @@ const getName = () => {
     '>
         <div style=' 
         width:40%; 
-        margin-top: 10%; 
+        margin-top: 5%; 
         border: 2px solid #ccc;
         border-radius:10px;
         display: table;
